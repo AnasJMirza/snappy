@@ -1,13 +1,36 @@
 import React from 'react';
 
-import GoogleLogin from 'react-google-login';
+import { GoogleLogin } from '@react-oauth/google';
+import jwtDecode from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
 import { FcGoogle } from 'react-icons/fc';
+import { client } from '../client';
 
 import loginBg from '../assets/videos/login-bg.mp4';
 import snappyLogo from '../assets/images/snappy-logo.png';
 
 const Login = () => {
+
+    const navigate = useNavigate();
+
+    const createOrGetUser = (response) => {
+        const decoded = jwtDecode(response.credential);
+        const { name, picture, sub } = decoded;
+        
+        const doc = {
+            _id: sub,
+            _type: 'user',
+            userName: name,
+            image: picture,
+        }
+
+        client.createIfNotExists(doc)
+            .then(() => {
+                navigate('/', { replace: true });
+            })
+        
+    }
+
     return (
         <div className='flex flex-col justify-start items-center h-screen'>
             <div className='relative h-full w-full'>
@@ -28,15 +51,8 @@ const Login = () => {
                 </div>
                 <div>
                     <GoogleLogin 
-                    clientId=''
-                    render={(renderProps) => (
-                        <button
-                        type='button'
-                        className='bg-mainColor flex items-center justify-around gap-2 p-2 rounded-lg cursor-pointer outline-none'
-                        >
-                            <FcGoogle /> Sign in With Google
-                        </button>
-                    )}
+                    onSuccess={(response) => createOrGetUser(response)}    
+                    onError={()=> console.log('error')}
                     />
                 </div>
             </div>
