@@ -13,10 +13,24 @@ const Login = () => {
 
     const navigate = useNavigate();
 
+    // handle response from google oAuth letest package
+
     const createOrGetUser = (response) => {
+
+        // decode the credential coming from google oAuth package because in letest package, you can not get image, name etc
+
         const decoded = jwtDecode(response.credential);
+
+        // set the credential to local storage of browser to get them later in other components
+
+        localStorage.setItem('user', JSON.stringify(decoded));
+
+        // distructing the object to get needed information
+
         const { name, picture, sub } = decoded;
-        
+
+        // creating a doc to send to sanity backend
+
         const doc = {
             _id: sub,
             _type: 'user',
@@ -24,6 +38,8 @@ const Login = () => {
             image: picture,
         }
 
+        // client file is a config file used for connection the FE with Sanity
+        
         client.createIfNotExists(doc)
             .then(() => {
                 navigate('/', { replace: true });
