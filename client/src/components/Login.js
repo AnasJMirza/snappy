@@ -1,11 +1,14 @@
 import React from 'react';
 
-import { GoogleLogin } from '@react-oauth/google';
+// third-party packeges
 import jwtDecode from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
-import { FcGoogle } from 'react-icons/fc';
+import { GoogleLogin } from '@react-oauth/google';
+
+// Sanity Client Connection
 import { client } from '../client';
 
+// images
 import loginBg from '../assets/videos/login-bg.mp4';
 import snappyLogo from '../assets/images/snappy-logo.png';
 
