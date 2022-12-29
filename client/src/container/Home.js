@@ -25,6 +25,8 @@ const Home = () => {
     // states to mange sidebar and user that is logged in
     const [toggleSidebar, setToggleSidebar] = useState(false);
     const [user, setUser] = useState(null);
+    // at the start the page will at specific position
+    const scrollRef = useRef(null);
 
     // get the user info we have set at the login time - provide userId from this this sanity to get the user
     const userInfo = localStorage.getItem('user') !== 'undefined' ? JSON.parse(localStorage.getItem('user')) : localStorage.clear();
@@ -40,6 +42,13 @@ const Home = () => {
         })
 
     }, [])
+
+
+    // at start, page will be at top position
+    useEffect(() => {
+      scrollRef.current.scrollTo(0, 0);
+    }, [])
+    
     
 
     return (
@@ -54,7 +63,7 @@ const Home = () => {
                 <div className='flex flex-row justify-between items-center w-full shadow-md p-2'>
                     <HiMenu fontSize={40} className='cursor-pointer' onClick={() => setToggleSidebar(true)}/>
                     <Link to={'/'}>
-                        <img src={Logo} alt='logo' className='w-24'/>
+                        <img src={Logo} alt='logo' className='w-20'/>
                     </Link>
                     <Link to={`user-profile/${user?._id}`}>
                         <img src={user?.image} alt='profile-image' className='w-10 rounded'/>
@@ -73,6 +82,13 @@ const Home = () => {
                     )
                 }
 
+            </div>
+
+            <div className='pb-2 overflow-y-scroll flex-1 h-screen' ref={scrollRef}>
+                <Routes>
+                    <Route path='/user-profile/:userId' element={<UserProfile />}/>
+                    <Route path='/*' element={<Pins user={user && user}/>}/>
+                </Routes>
             </div>
         </div>
     );
