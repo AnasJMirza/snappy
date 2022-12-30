@@ -12,7 +12,7 @@ const Navbar = ({searchTerm, setSearchTerm, user}) => {
 
 
     return (
-        <div className='flex flex-row justify-between items-center m-3 gap-3'>
+        <div className='flex flex-row justify-between items-center md:m-3 m-1 md:gap-3 gap-1 animate-slide-in'>
             <div className='flex items-center gap-2 bg-white w-full p-3 rounded'>
                 <IoMdSearch fontSize={20}/>
                 <input 
@@ -24,10 +24,10 @@ const Navbar = ({searchTerm, setSearchTerm, user}) => {
                 className='bg-white outline-none'
                 />
             </div>
-            <Link to={`/user-profile/${user?._id}`} className='cursor-pointer'>
+            <Link to={`/user-profile/${user?._id}`} className='cursor-pointer hidden md:block'>
                 <img src={user?.image} alt='user' className='w-12 rounded'/>
             </Link>
-            <Link to={`/create-pin`} className='bg-black text-white w-12 h-12 rounded flex justify-center items-center'>
+            <Link to={`/create-pin`} className='bg-black text-white w-12 p-3 rounded flex justify-center items-center'>
                 <IoMdAdd fontSize={20}/>
             </Link>
         </div>
